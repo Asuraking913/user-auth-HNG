@@ -1,0 +1,8 @@
+flask_sqlalchemy
+flask_migrate
+flask
+wtforms
+flask_bcrypt
+flask_session
+redis
+Flask-JWT-Extended
