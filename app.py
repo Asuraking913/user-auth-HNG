@@ -1,10 +1,13 @@
 from flask import Flask
 from extensions import jwt, db
 from config import AppConfig
-from root import root_route
+from route import root_route
 
 app = Flask(__name__)
 app.config.from_object(AppConfig)
+
+#routes init
+root_route(app)
 
 if __name__ == '__main__':
     with app.app_context():
