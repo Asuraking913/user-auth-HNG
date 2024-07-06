@@ -1,6 +1,7 @@
 from flask import Flask
 from extensions import jwt, db
 from config import AppConfig
+from root import root_route
 
 app = Flask(__name__)
 app.config.from_object(AppConfig)
@@ -10,4 +11,4 @@ if __name__ == '__main__':
         db.init_app(app)
         db.create_all()
         jwt.init_app(app)
-    app.run()
+    app.run(debug=True)

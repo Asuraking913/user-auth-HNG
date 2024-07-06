@@ -3,3 +3,4 @@ flask
 flask_bcrypt
 Flask-JWT-Extended
 flask_dotenv
+dotenv

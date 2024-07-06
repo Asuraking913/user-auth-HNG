@@ -19,10 +19,10 @@ class Users(db.Model):
         self.email = email
 
 class Organisation(db.Model):
-    orgId = db.Column(db.String(255), unique = True, default = create_id)
-    name = db.Column(db.String(255), nullable = False, required = True)
+    orgId = db.Column(db.String(255), unique = True, primary_key = True, default = create_id)
+    name = db.Column(db.String(255), nullable = False)
     description = db.Column(db.String(255))
-    userId = db.Column(db.String(255), db.ForeignKey('users.id'))
+    userId = db.Column(db.String(255), db.ForeignKey('users.userId'))
 
     def __init__(self, name, descp):
         self.name = name
