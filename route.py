@@ -51,8 +51,7 @@ def root_route(app):
 
             new_user = Users(firstName = firstname, lastName = lastname, email = email, password = pass_w, phone = phone)
             db.session.add(new_user)
-            db.session.commit()
-            new_org = Organisation(f"{firstname}'s Organisation")
+            new_org = Organisation(name = f"{firstname}'s Organisation")
             db.session.add(new_org)
             db.session.commit()
             userId = Users.query.filter_by(email = email).first()
@@ -73,11 +72,13 @@ def root_route(app):
                 }
             }, 201 
         except Exception as e:
+            db.session.rollback()
+            print(e)
             return {
                 "status": "Bad request",
                 "message": "Registration unsuccessful",
                 "statusCode": 400
-            }
+            }, 400
     
     @app.route("/auth/login", methods = ['POST'])
     def login():
@@ -208,4 +209,16 @@ def root_route(app):
         	}
         }, 200
 
-        
+    @app.route("/api/organisations/<orgId>/users", methods = ['POST'])
+    def add_user_org(orgId):
+        user_id = request.json['userId']
+        user = Users.query.filter_by(userId = user_id).first()
+        org = Organisation.query.filter_by(orgId = orgId).first()
+        org_name = org.name
+        org.users = user
+        db.session.commit()
+
+        return {
+            "status": "success",
+            "message": f"{user.firstName} added to {org_name} successfully",
+        }
