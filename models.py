@@ -19,9 +19,6 @@ class Organisation(db.Model):
     description = db.Column(db.String(255))
     userId = db.Column(db.String(255), db.ForeignKey('users.userId'))
 
-    def __init__(self, name):
-        self.name = name
-
 user_organisation = db.Table('user_organisation',
     db.Column('user_id', db.String(255), db.ForeignKey('users.userId'), primary_key=True),
     db.Column('org_id', db.String(255), db.ForeignKey('organisation.orgId'), primary_key=True)
