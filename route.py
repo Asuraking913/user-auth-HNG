@@ -75,6 +75,7 @@ def root_route(app):
             db.session.rollback()
             print(e)
             return {
+                "error" : f"{e}",
                 "status": "Bad request",
                 "message": "Registration unsuccessful",
                 "statusCode": 400
@@ -102,7 +103,7 @@ def root_route(app):
 	                    			"phone": user.phone,
                           }
                         }
-                }
+                }, 201
                 
         return {
             "status": "Bad request",
@@ -201,7 +202,7 @@ def root_route(app):
 
         return {
             "status": "success",
-        		"message": f"{user.firstName}'s organisation reccord",
+        		"message": f"{user.firstName}'s organisation record",
             "data": {
         		"orgId": user.organisation[0].orgId,
         		"name": user.organisation[0].name, 
