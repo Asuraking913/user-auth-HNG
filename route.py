@@ -6,6 +6,10 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 def root_route(app):
 
+    @app.route("/")
+    def home():
+        return "<h1>This is the home page</h1>"
+
     def validator(data):
         error = []
         required_fields = ['firstName', 'lastName', 'email', 'password', "phone"]
