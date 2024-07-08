@@ -8,5 +8,5 @@ class AppConfig:
     SQLALCHEMY_DATABASE_URI = "postgresql://postgres.qfkcizyvmvolluzkqxqf:CdVAy16F9ej0lZS9@aws-0-eu-central-1.pooler.supabase.com:6543/postgres"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
-    JWT_SECRET_KEY = os.getenv('SECRET_KEY')
+    JWT_SECRET_KEY = "#@$@#$@#$@#$@#$@$#@#$@#$@#$@$##@$@#$%##^$^FDHFH#$^%$#W#"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=100)
