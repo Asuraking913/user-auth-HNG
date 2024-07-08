@@ -10,4 +10,4 @@ class AppConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     JWT_SECRET_KEY = "#@$@#$@#$@#$@#$@$#@#$@#$@#$@$##@$@#$%##^$^FDHFH#$^%$#W#"
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=100)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=7)

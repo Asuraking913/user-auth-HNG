@@ -21,6 +21,6 @@ class Organisation(db.Model):
 
 class UserOrganization(db.Model):
     __tablename__ = 'user_organization'
-    userId = db.Column(db.Integer, db.ForeignKey('users.userId'), primary_key=True)
-    orgId = db.Column(db.Integer, db.ForeignKey('organisation.orgId'), primary_key=True)
+    userId = db.Column(db.String(225), db.ForeignKey('users.userId'), primary_key=True)
+    orgId = db.Column(db.String(225), db.ForeignKey('organisation.orgId'), primary_key=True)
     db.UniqueConstraint('userId', 'orgId', name='unique_user_organisation')
