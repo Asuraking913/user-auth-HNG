@@ -17,7 +17,7 @@ def root_route(app):
         error = []
         required_fields = ['firstName', 'lastName', 'email', 'password', "phone"]
         for field in required_fields:
-            if field not in data or not data[field]:
+            if field not in data:
                 error.append({
                 "field": field,
                 "message": f"The {field} value is invalid"
@@ -49,7 +49,7 @@ def root_route(app):
             universal_users = Users.query.all()
             userId = Users.query.filter_by(email = email).first()
             for user in universal_users: 
-                if user.email == email:
+                if user.email == userId.email:
                     return {
                             "status": "Bad request",
                             "message": "Email already exists",
@@ -98,6 +98,10 @@ def root_route(app):
     @app.route("/auth/login", methods = ['POST'])
     def login():
         data = request.json
+        errors = validator(data)
+        if errors != []:
+            return {"errors": errors}, 422
+        validator(data)
         email = data['email']
         pass_w = data['password']
         user = Users.query.filter_by(email = email).first()
@@ -110,8 +114,8 @@ def root_route(app):
                         "data": {
                           "accessToken": access_token,
                           "user": {
-	                          "userId": user.userId,
-	                          "firstName": user.firstName,
+	                                "userId": user.userId,
+	                                "firstName": user.firstName,
 	                    			"lastName": user.lastName,
 	                    			"email": user.email,
 	                    			"phone": user.phone,
