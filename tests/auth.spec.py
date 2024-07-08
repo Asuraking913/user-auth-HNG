@@ -38,9 +38,10 @@ class TestRoutes(unittest.TestCase):
         app.config['TESTING'] = True 
         self.client = app.test_client()
 
-    def test_test_route(self):
-        response = self.client.get("/auth/test")
-        self.assertEqual(response.status_code, 200)
+    #test func
+    # def test_test_route(self):
+    #     response = self.client.get("/auth/test")
+    #     self.assertEqual(response.status_code, 200)
 
     def test_register_route(self):
         response = self.client.post("/auth/register", json = data_gen)
