@@ -19,7 +19,8 @@ class Organisation(db.Model):
     description = db.Column(db.String(255))
     userId = db.Column(db.String(255), db.ForeignKey('users.userId'))
 
-user_organisation = db.Table('user_organisation',
-    db.Column('user_id', db.String(255), db.ForeignKey('users.userId'), primary_key=True),
-    db.Column('org_id', db.String(255), db.ForeignKey('organisation.orgId'), primary_key=True)
-)
+class UserOrganization(db.Model):
+    __tablename__ = 'user_organization'
+    userId = db.Column(db.Integer, db.ForeignKey('users.userId'), primary_key=True)
+    orgId = db.Column(db.Integer, db.ForeignKey('organisation.orgId'), primary_key=True)
+    db.UniqueConstraint('userId', 'orgId', name='unique_user_organisation')

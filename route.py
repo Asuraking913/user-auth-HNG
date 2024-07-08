@@ -44,7 +44,7 @@ def root_route(app):
             lastname = data['lastName']
             email = data['email']
             pass_w = data['password']
-            pass_w = hasher.generate_password_hash(pass_w)
+            pass_w = hasher.generate_password_hash(pass_w).decode('utf-8')
             phone = data['phone']
             universal_users = Users.query.all()
             userId = Users.query.filter_by(email = email).first()
@@ -57,8 +57,15 @@ def root_route(app):
                                 }, 400
 
             new_user = Users(firstName = firstname, lastName = lastname, email = email, password = pass_w, phone = phone)
+            for user in universal_users: 
+                if user.userId == new_user.userId:
+                    return {
+                            "status": "Bad request",
+                            "message": "userId already exists",
+                            "statusCode": 400
+                                }, 400
             db.session.add(new_user)
-            new_org = Organisation(name = f"{firstname}'s Organisation")
+            new_org = Organisation(name = f"{firstname}'s Organisation", users = new_user)
             db.session.add(new_org)
             db.session.commit()
             userId = Users.query.filter_by(email = email).first()
@@ -150,10 +157,11 @@ def root_route(app):
             user_orgs = Users.query.filter_by(userId = user_id).first().organisation
 
             orgList = [{"orgId" : orgs.orgId, "name" : orgs.name, "descrption": orgs.description} for orgs in user_orgs]
+            user_name =Users.query.filter_by(userId = user_id).first().firstName
 
             return {
                 "status": "success",
-	            	"message": "User's list of organisation",
+	            	"message": f"{user_name}'s list of organisation",
                 "data": {
                   "organisations": orgList
                 }
