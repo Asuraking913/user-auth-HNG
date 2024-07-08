@@ -3,8 +3,12 @@ from extensions import db
 from flask import request, jsonify
 from extensions import hasher
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_bcrypt import Bcrypt
 
 def root_route(app):
+
+    hasher = Bcrypt()
+
 
     @app.route("/")
     def home():
