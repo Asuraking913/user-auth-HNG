@@ -48,43 +48,47 @@ def root_route(app):
             phone = data['phone']
             universal_users = Users.query.all()
             userId = Users.query.filter_by(email = email).first()
-            for user in universal_users: 
-                if user.email == userId.email:
-                    return {
-                            "status": "Bad request",
-                            "message": "Email already exists",
-                            "statusCode": 422
-                                }, 422
+            if userId != None:
+                print('yes')
+                for user in universal_users: 
+                    if user.email == userId.email:
+                        return {
+                                "status": "Bad request",
+                                "message": "Email already exists",
+                                "statusCode": 422
+                                    }, 422
+            else:
 
-            new_user = Users(firstName = firstname, lastName = lastname, email = email, password = pass_w, phone = phone)
-            for user in universal_users: 
-                if user.userId == new_user.userId:
-                    return {
-                            "status": "Bad request",
-                            "message": "userId already exists",
-                            "statusCode": 422
-                                }, 422
-            db.session.add(new_user)
-            new_org = Organisation(name = f"{firstname}'s Organisation", users = new_user)
-            db.session.add(new_org)
-            db.session.commit()
-            userId = Users.query.filter_by(email = email).first()
-            access_token = create_access_token(identity=userId.userId)
 
-            return {
-                    "status": "success",
-                    "message": "Registration successful",
-                    "data": {
-                      "accessToken": access_token,
-                      "user": {
-	                      "userId": userId.userId,
-	                      "firstName": firstname, 
-	                			"lastName": lastname,
-	                			"email": email,
-	                			"phone": phone,
-                  }
-                }
-            }, 201 
+                new_user = Users(firstName = firstname, lastName = lastname, email = email, password = pass_w, phone = phone)
+                for user in universal_users: 
+                    if user.userId == new_user.userId:
+                        return {
+                                "status": "Bad request",
+                                "message": "userId already exists",
+                                "statusCode": 422
+                                    }, 422
+                db.session.add(new_user)
+                new_org = Organisation(name = f"{firstname}'s Organisation", users = new_user)
+                db.session.add(new_org)
+                db.session.commit()
+                userId = Users.query.filter_by(email = email).first()
+                access_token = create_access_token(identity=userId.userId)
+
+                return {
+                        "status": "success",
+                        "message": "Registration successful",
+                        "data": {
+                          "accessToken": access_token,
+                          "user": {
+	                          "userId": userId.userId,
+	                          "firstName": firstname, 
+	                    			"lastName": lastname,
+	                    			"email": email,
+	                    			"phone": phone,
+                        }
+                        }
+                    }, 201 
         except Exception as e:
             db.session.rollback()
             print(e)
