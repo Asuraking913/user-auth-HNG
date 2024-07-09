@@ -95,9 +95,9 @@ def root_route(app):
     @app.route("/auth/login", methods = ['POST'])
     def login():
         data = request.json
-        errors = validator(data)
-        if errors != []:
-            return {"errors": errors}, 422
+        # errors = validator(data)
+        # if errors != []:
+        #     return {"errors": errors}, 422
         email = data['email']
         pass_w = data['password']
         user = Users.query.filter_by(email = email).first()
