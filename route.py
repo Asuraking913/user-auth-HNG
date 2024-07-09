@@ -53,8 +53,8 @@ def root_route(app):
                     return {
                             "status": "Bad request",
                             "message": "Email already exists",
-                            "statusCode": 400
-                                }, 400
+                            "statusCode": 422
+                                }, 422
 
             new_user = Users(firstName = firstname, lastName = lastname, email = email, password = pass_w, phone = phone)
             for user in universal_users: 
@@ -62,8 +62,8 @@ def root_route(app):
                     return {
                             "status": "Bad request",
                             "message": "userId already exists",
-                            "statusCode": 400
-                                }, 400
+                            "statusCode": 422
+                                }, 422
             db.session.add(new_user)
             new_org = Organisation(name = f"{firstname}'s Organisation", users = new_user)
             db.session.add(new_org)
@@ -101,7 +101,6 @@ def root_route(app):
         errors = validator(data)
         if errors != []:
             return {"errors": errors}, 422
-        validator(data)
         email = data['email']
         pass_w = data['password']
         user = Users.query.filter_by(email = email).first()
