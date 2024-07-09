@@ -61,13 +61,6 @@ def root_route(app):
 
 
                 new_user = Users(firstName = firstname, lastName = lastname, email = email, password = pass_w, phone = phone)
-                for user in universal_users: 
-                    if user.userId == new_user.userId:
-                        return {
-                                "status": "Bad request",
-                                "message": "userId already exists",
-                                "statusCode": 422
-                                    }, 422
                 db.session.add(new_user)
                 new_org = Organisation(name = f"{firstname}'s Organisation", users = new_user)
                 db.session.add(new_org)
@@ -108,24 +101,25 @@ def root_route(app):
         email = data['email']
         pass_w = data['password']
         user = Users.query.filter_by(email = email).first()
-        if user.email == email:
-            if hasher.check_password_hash(user.password, pass_w):
-                access_token = create_access_token(identity=user.userId)
-                return {
-                        "status": "success",
-                        "message": "Login successful",
-                        "data": {
-                          "accessToken": access_token,
-                          "user": {
-	                                "userId": user.userId,
-	                                "firstName": user.firstName,
-	                    			"lastName": user.lastName,
-	                    			"email": user.email,
-	                    			"phone": user.phone,
-                          }
-                        }
-                }, 201
-                
+        if user != None:
+            if user.email == email:
+                if hasher.check_password_hash(user.password, pass_w):
+                    access_token = create_access_token(identity=user.userId)
+                    return {
+                            "status": "success",
+                            "message": "Login successful",
+                            "data": {
+                              "accessToken": access_token,
+                              "user": {
+	                                    "userId": user.userId,
+	                                    "firstName": user.firstName,
+	                        			"lastName": user.lastName,
+	                        			"email": user.email,
+	                        			"phone": user.phone,
+                              }
+                            }
+                    }, 200
+
         return {
             "status": "Bad request",
             "message": "Authentication failed",
